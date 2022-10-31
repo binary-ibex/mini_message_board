@@ -1,0 +1,31 @@
+version: '3.8'
+
+
+services:
+  mongo_database_service:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - mongo_db_volumn:/data/db
+    ports:
+      - "27018:27017"
+  redis_server:
+    image: redis
+    ports:
+      - 6371:6379
+  web:
+    build: message_board_banckend/
+    command: python server.py
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo_database_service
+      - redis_server
+
+volumes:
+  mongo_data:
+  static_volume:
+  mongo_db_volumn:
